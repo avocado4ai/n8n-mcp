@@ -1,11 +1,11 @@
 # n8n-MCP
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/czlonkowski/n8n-mcp?style=social)](https://github.com/czlonkowski/n8n-mcp)
-[![Version](https://img.shields.io/badge/version-2.7.15-blue.svg)](https://github.com/czlonkowski/n8n-mcp)
+[![GitHub stars](https://img.shields.io/github/stars/avocado4ai/n8n-mcp?style=social)](https://github.com/avocado4ai/n8n-mcp)
+[![Version](https://img.shields.io/badge/version-2.7.15-blue.svg)](https://github.com/avocado4ai/n8n-mcp)
 [![npm version](https://img.shields.io/npm/v/n8n-mcp.svg)](https://www.npmjs.com/package/n8n-mcp)
 [![n8n version](https://img.shields.io/badge/n8n-v1.101.1-orange.svg)](https://github.com/n8n-io/n8n)
-[![Docker](https://img.shields.io/badge/docker-ghcr.io%2Fczlonkowski%2Fn8n--mcp-green.svg)](https://github.com/czlonkowski/n8n-mcp/pkgs/container/n8n-mcp)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io%2Favocado4ai%2Fn8n--mcp-green.svg)](https://github.com/avocado4ai/n8n-mcp/pkgs/container/n8n-mcp)
 
 A Model Context Protocol (MCP) server that provides AI assistants with comprehensive access to n8n node documentation, properties, and operations. Deploy in minutes to give Claude and other AI assistants deep knowledge about n8n's 525+ workflow automation nodes.
 
@@ -32,67 +32,13 @@ AI results can be unpredictable. Protect your work!
 
 ## 🚀 Quick Start
 
-Get n8n-MCP running in 5 minutes:
+Get n8n-MCP running in 5 minutes using Docker (recommended):
 
 [![n8n-mcp Video Quickstart Guide](./thumbnail.png)](https://youtu.be/5CccjiLLyaY?si=Z62SBGlw9G34IQnQ&t=343)
 
-### Option 1: npx (Fastest - No Installation!) 🚀
+## 🐳 Docker Installation (Recommended)
 
-**Prerequisites:** [Node.js](https://nodejs.org/) installed on your system
-
-```bash
-# Run directly with npx (no installation needed!)
-npx n8n-mcp
-```
-
-Add to Claude Desktop config:
-
-**Basic configuration (documentation tools only):**
-```json
-{
-  "mcpServers": {
-    "n8n-mcp": {
-      "command": "npx",
-      "args": ["n8n-mcp"],
-      "env": {
-        "MCP_MODE": "stdio",
-        "LOG_LEVEL": "error",
-        "DISABLE_CONSOLE_OUTPUT": "true"
-      }
-    }
-  }
-}
-```
-
-**Full configuration (with n8n management tools):**
-```json
-{
-  "mcpServers": {
-    "n8n-mcp": {
-      "command": "npx",
-      "args": ["n8n-mcp"],
-      "env": {
-        "MCP_MODE": "stdio",
-        "LOG_LEVEL": "error",
-        "DISABLE_CONSOLE_OUTPUT": "true",
-        "N8N_API_URL": "https://your-n8n-instance.com",
-        "N8N_API_KEY": "your-api-key"
-      }
-    }
-  }
-}
-```
-
-> **Note**: npx will download and run the latest version automatically. The package includes a pre-built database with all n8n node information.
-
-**Configuration file locations:**
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-- **Linux**: `~/.config/Claude/claude_desktop_config.json`
-
-**Restart Claude Desktop after updating configuration** - That's it! 🎉
-
-### Option 2: Docker (Easy & Isolated) 🐳
+Docker provides the easiest and most reliable way to run n8n-MCP with zero dependencies and full isolation.
 
 **Prerequisites:** Docker installed on your system
 
@@ -143,7 +89,7 @@ docker --version
 
 ```bash
 # Pull the Docker image (~280MB, no n8n dependencies!)
-docker pull ghcr.io/czlonkowski/n8n-mcp:latest
+docker pull ghcr.io/avocado4ai/n8n-mcp:latest
 ```
 
 > **⚡ Ultra-optimized:** Our Docker image is 82% smaller than typical n8n images because it contains NO n8n dependencies - just the runtime MCP server with a pre-built database!
@@ -163,7 +109,7 @@ Add to Claude Desktop config:
         "-e", "MCP_MODE=stdio",
         "-e", "LOG_LEVEL=error",
         "-e", "DISABLE_CONSOLE_OUTPUT=true",
-        "ghcr.io/czlonkowski/n8n-mcp:latest"
+        "ghcr.io/avocado4ai/n8n-mcp:latest"
       ]
     }
   }
@@ -185,7 +131,7 @@ Add to Claude Desktop config:
         "-e", "DISABLE_CONSOLE_OUTPUT=true",
         "-e", "N8N_API_URL=https://your-n8n-instance.com",
         "-e", "N8N_API_KEY=your-api-key",
-        "ghcr.io/czlonkowski/n8n-mcp:latest"
+        "ghcr.io/avocado4ai/n8n-mcp:latest"
       ]
     }
   }
@@ -207,33 +153,72 @@ Add to Claude Desktop config:
 
 **Restart Claude Desktop after updating configuration** - That's it! 🎉
 
-## 💖 Support This Project
-
-<div align="center">
-  <a href="https://github.com/sponsors/czlonkowski">
-    <img src="https://img.shields.io/badge/Sponsor-❤️-db61a2?style=for-the-badge&logo=github-sponsors" alt="Sponsor n8n-mcp" />
-  </a>
-</div>
-
-**n8n-mcp** started as a personal tool but now helps tens of thousands of developers automate their workflows efficiently. Maintaining and developing this project competes with my paid work.
-
-Your sponsorship helps me:
-- 🚀 Dedicate focused time to new features
-- 🐛 Respond quickly to issues
-- 📚 Keep documentation up-to-date
-- 🔄 Ensure compatibility with latest n8n releases
-
-Every sponsorship directly translates to hours invested in making n8n-mcp better for everyone. **[Become a sponsor →](https://github.com/sponsors/czlonkowski)**
-
 ---
 
-### Option 3: Local Installation (For Development)
+## 🔧 Alternative Installation Methods
+
+<details>
+<summary><strong>Option 2: npx (No Installation Required)</strong> 🚀</summary>
+
+**Prerequisites:** [Node.js](https://nodejs.org/) installed on your system
+
+```bash
+# Run directly with npx (no installation needed!)
+npx n8n-mcp
+```
+
+Add to Claude Desktop config:
+
+**Basic configuration (documentation tools only):**
+```json
+{
+  "mcpServers": {
+    "n8n-mcp": {
+      "command": "npx",
+      "args": ["n8n-mcp"],
+      "env": {
+        "MCP_MODE": "stdio",
+        "LOG_LEVEL": "error",
+        "DISABLE_CONSOLE_OUTPUT": "true"
+      }
+    }
+  }
+}
+```
+
+**Full configuration (with n8n management tools):**
+```json
+{
+  "mcpServers": {
+    "n8n-mcp": {
+      "command": "npx",
+      "args": ["n8n-mcp"],
+      "env": {
+        "MCP_MODE": "stdio",
+        "LOG_LEVEL": "error",
+        "DISABLE_CONSOLE_OUTPUT": "true",
+        "N8N_API_URL": "https://your-n8n-instance.com",
+        "N8N_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+> **Note**: npx will download and run the latest version automatically. The package includes a pre-built database with all n8n node information.
+
+**Restart Claude Desktop after updating configuration** - That's it! 🎉
+
+</details>
+
+<details>
+<summary><strong>Option 3: Local Installation (For Development)</strong></summary>
 
 **Prerequisites:** [Node.js](https://nodejs.org/) installed on your system
 
 ```bash
 # 1. Clone and setup
-git clone https://github.com/czlonkowski/n8n-mcp.git
+git clone https://github.com/avocado4ai/n8n-mcp.git
 cd n8n-mcp
 npm install
 npm run build
@@ -283,7 +268,31 @@ Add to Claude Desktop config:
 
 > **Note**: The n8n API credentials can be configured either in a `.env` file (create from `.env.example`) or directly in the Claude config as shown above.
 
-> 💡 Tip: If you’re running n8n locally on the same machine (e.g., via Docker), use http://host.docker.internal:5678 as the N8N_API_URL.
+> 💡 Tip: If you're running n8n locally on the same machine (e.g., via Docker), use http://host.docker.internal:5678 as the N8N_API_URL.
+
+**Restart Claude Desktop after updating configuration** - That's it! 🎉
+
+</details>
+
+---
+
+## 💖 Support This Project
+
+<div align="center">
+  <a href="https://github.com/sponsors/avocado4ai">
+    <img src="https://img.shields.io/badge/Sponsor-❤️-db61a2?style=for-the-badge&logo=github-sponsors" alt="Sponsor n8n-mcp" />
+  </a>
+</div>
+
+**n8n-mcp** started as a personal tool but now helps tens of thousands of developers automate their workflows efficiently. Maintaining and developing this project competes with my paid work.
+
+Your sponsorship helps me:
+- 🚀 Dedicate focused time to new features
+- 🐛 Respond quickly to issues
+- 📚 Keep documentation up-to-date
+- 🔄 Ensure compatibility with latest n8n releases
+
+Every sponsorship directly translates to hours invested in making n8n-mcp better for everyone. **[Become a sponsor →](https://github.com/sponsors/avocado4ai)**
 
 ## 💻 Visual Studio Code Setup
 
@@ -422,7 +431,7 @@ Save these instructions in your Claude Project for optimal n8n workflow assistan
 This project is MIT licensed and free for everyone to use. However:
 
 - **✅ DO**: Share this repository freely with proper attribution
-- **✅ DO**: Include a direct link to https://github.com/czlonkowski/n8n-mcp in your first post/video
+- **✅ DO**: Include a direct link to https://github.com/avocado4ai/n8n-mcp in your first post/video
 - **❌ DON'T**: Gate this free tool behind engagement requirements (likes, follows, comments)
 - **❌ DON'T**: Use this project for engagement farming on social media
 
@@ -542,7 +551,7 @@ For contributors and advanced users:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/czlonkowski/n8n-mcp.git
+git clone https://github.com/avocado4ai/n8n-mcp.git
 cd n8n-mcp
 
 # 2. Clone n8n docs (optional but recommended)
@@ -638,7 +647,7 @@ When using n8n-MCP with Claude Desktop in Docker mode, Claude Desktop may start 
       "command": "docker",
       "args": [
         "run", "-i", "--rm",
-        "ghcr.io/czlonkowski/n8n-mcp:latest"
+        "ghcr.io/avocado4ai/n8n-mcp:latest"
       ]
     }
   }

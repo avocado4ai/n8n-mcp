@@ -74,8 +74,27 @@ src/
 
 ## Key Commands
 
+**Primary Deployment (Recommended):**
 ```bash
-# Development
+# Docker (Recommended - Production Ready)
+docker pull ghcr.io/avocado4ai/n8n-mcp:latest
+docker run -i --rm ghcr.io/avocado4ai/n8n-mcp:latest
+
+# With n8n API integration
+docker run -i --rm \
+  -e N8N_API_URL=https://your-n8n-instance.com \
+  -e N8N_API_KEY=your-api-key \
+  ghcr.io/avocado4ai/n8n-mcp:latest
+
+# Docker Compose (for persistent deployment)
+docker compose up -d        # Start with Docker Compose
+docker compose logs -f      # View logs
+docker compose down         # Stop containers
+```
+
+**Development Commands:**
+```bash
+# Local development (only needed for contributing)
 npm install          # Install dependencies
 npm run build        # Build TypeScript (required before running)
 npm run dev          # Run in development mode with auto-reload
@@ -283,13 +302,22 @@ Uses SQLite with enhanced schema:
 
 ## Important Development Notes
 
-### Initial Setup Requirements
+### Docker Setup (Recommended)
 
-1. **Clone n8n-docs**: `git clone https://github.com/n8n-io/n8n-docs.git ../n8n-docs`
-2. **Install Dependencies**: `npm install`
-3. **Build**: `npm run build`
-4. **Rebuild Database**: `npm run rebuild`
-5. **Validate**: `npm run test-nodes`
+**For Production Use:**
+```bash
+# Pull and run the Docker image (easiest)
+docker pull ghcr.io/avocado4ai/n8n-mcp:latest
+docker run -i --rm ghcr.io/avocado4ai/n8n-mcp:latest
+```
+
+**For Development/Local Setup:**
+1. **Clone Repository**: `git clone https://github.com/avocado4ai/n8n-mcp.git`
+2. **Clone n8n-docs** (optional): `git clone https://github.com/n8n-io/n8n-docs.git ../n8n-docs`
+3. **Install Dependencies**: `npm install`
+4. **Build**: `npm run build`
+5. **Rebuild Database**: `npm run rebuild`
+6. **Validate**: `npm run test-nodes`
 
 ### Key Technical Decisions (v2.3)
 

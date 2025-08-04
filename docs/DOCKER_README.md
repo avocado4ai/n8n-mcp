@@ -15,7 +15,7 @@ The simplest way to deploy n8n-MCP is using Docker Compose with HTTP mode:
 
 ```bash
 # Clone the repository
-git clone https://github.com/czlonkowski/n8n-mcp.git
+git clone https://github.com/avocado4ai/n8n-mcp.git
 cd n8n-mcp
 
 # Create .env file with auth token
@@ -40,7 +40,7 @@ Pre-built images are available on GitHub Container Registry:
 
 ```bash
 # Pull the latest image (~280MB optimized)
-docker pull ghcr.io/czlonkowski/n8n-mcp:latest
+docker pull ghcr.io/avocado4ai/n8n-mcp:latest
 
 # Run with HTTP mode
 docker run -d \
@@ -49,7 +49,7 @@ docker run -d \
   -e USE_FIXED_HTTP=true \
   -e AUTH_TOKEN=your-secure-token \
   -p 3000:3000 \
-  ghcr.io/czlonkowski/n8n-mcp:latest
+  ghcr.io/avocado4ai/n8n-mcp:latest
 ```
 
 ## 📋 Configuration Options
@@ -106,7 +106,7 @@ docker run -d \
   -e MCP_MODE=http \
   -e AUTH_TOKEN=your-secure-token \
   -p 3000:3000 \
-  ghcr.io/czlonkowski/n8n-mcp:latest
+  ghcr.io/avocado4ai/n8n-mcp:latest
 ```
 
 Configure Claude Desktop with mcp-remote:
@@ -138,7 +138,7 @@ For local Claude Desktop integration without HTTP:
 docker run --rm -i \
   -e MCP_MODE=stdio \
   -v n8n-mcp-data:/app/data \
-  ghcr.io/czlonkowski/n8n-mcp:latest
+  ghcr.io/avocado4ai/n8n-mcp:latest
 ```
 
 Configure Claude Desktop:
@@ -153,7 +153,7 @@ Configure Claude Desktop:
         "-i",
         "-e", "MCP_MODE=stdio",
         "-v", "n8n-mcp-data:/app/data",
-        "ghcr.io/czlonkowski/n8n-mcp:latest"
+        "ghcr.io/avocado4ai/n8n-mcp:latest"
       ]
     }
   }
@@ -166,7 +166,7 @@ Configure Claude Desktop:
 
 ```bash
 # Clone repository
-git clone https://github.com/czlonkowski/n8n-mcp.git
+git clone https://github.com/avocado4ai/n8n-mcp.git
 cd n8n-mcp
 
 # Build image
@@ -383,7 +383,7 @@ docker run -d \
   -e AUTH_TOKEN=test \
   -e LOG_LEVEL=debug \
   -p 3000:3000 \
-  ghcr.io/czlonkowski/n8n-mcp:latest
+  ghcr.io/avocado4ai/n8n-mcp:latest
 ```
 
 ### Container Shell Access
@@ -412,7 +412,7 @@ docker exec -it -u root n8n-mcp sh
 # docker-compose.prod.yml
 services:
   n8n-mcp:
-    image: ghcr.io/czlonkowski/n8n-mcp:latest
+    image: ghcr.io/avocado4ai/n8n-mcp:latest
     restart: always
     environment:
       MCP_MODE: http
@@ -452,9 +452,9 @@ secrets:
 
 ## 📦 Available Images
 
-- `ghcr.io/czlonkowski/n8n-mcp:latest` - Latest stable release
-- `ghcr.io/czlonkowski/n8n-mcp:2.3.0` - Specific version
-- `ghcr.io/czlonkowski/n8n-mcp:main-abc123` - Development builds
+- `ghcr.io/avocado4ai/n8n-mcp:latest` - Latest stable release
+- `ghcr.io/avocado4ai/n8n-mcp:2.3.0` - Specific version
+- `ghcr.io/avocado4ai/n8n-mcp:main-abc123` - Development builds
 
 ### Image Details
 
@@ -501,8 +501,8 @@ services:
 
 ## 🤝 Support
 
-- Issues: [GitHub Issues](https://github.com/czlonkowski/n8n-mcp/issues)
-- Discussions: [GitHub Discussions](https://github.com/czlonkowski/n8n-mcp/discussions)
+- Issues: [GitHub Issues](https://github.com/avocado4ai/n8n-mcp/issues)
+- Discussions: [GitHub Discussions](https://github.com/avocado4ai/n8n-mcp/discussions)
 
 ---
 
