@@ -1,6 +1,6 @@
 # Docker Compose file with BuildKit optimizations for faster builds
 # This now builds without n8n dependencies for ultra-fast builds
-version: '3.8'
+version: "3.8"
 
 services:
   n8n-mcp:
@@ -20,19 +20,19 @@ services:
     image: n8n-mcp:latest
     container_name: n8n-mcp
     ports:
-      - "3000:3000"
+      - "7010:7010"
     environment:
       - MCP_MODE=${MCP_MODE:-http}
       - AUTH_TOKEN=${AUTH_TOKEN}
       - NODE_ENV=${NODE_ENV:-production}
       - LOG_LEVEL=${LOG_LEVEL:-info}
-      - PORT=3000
+      - PORT=7010
     volumes:
       # Mount data directory for persistence
       - ./data:/app/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:7010/health"]
       interval: 30s
       timeout: 10s
       retries: 3

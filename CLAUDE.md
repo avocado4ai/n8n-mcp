@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 n8n-mcp is a comprehensive documentation and knowledge server that provides AI assistants with complete access to n8n node information through the Model Context Protocol (MCP). It serves as a bridge between n8n's workflow automation platform and AI models, enabling them to understand and work with n8n nodes effectively.
 
 ### Current Architecture:
+
 ```
 src/
 ├── loaders/
@@ -63,6 +64,7 @@ src/
 ```
 
 ### Key Metrics:
+
 - 525 nodes successfully loaded (100%) - Updated to n8n v1.97.1
 - 520 nodes with properties (99%)
 - 334 nodes with operations (63.6%)
@@ -142,13 +144,16 @@ docker compose down -v      # Stop and remove volumes
 The project includes ultra-optimized Docker support with NO n8n dependencies at runtime:
 
 ### 🚀 Key Optimization: Runtime-Only Dependencies
+
 **Important**: Since the database is always pre-built before deployment, the Docker image contains NO n8n dependencies. This results in:
+
 - **82% smaller images** (~280MB vs ~1.5GB)
 - **10x faster builds** (~1-2 minutes vs ~12 minutes)
 - **No n8n version conflicts** at runtime
 - **Minimal attack surface** for security
 
 ### Quick Start with Docker
+
 ```bash
 # IMPORTANT: Rebuild database first (requires n8n locally)
 npm run rebuild
@@ -160,17 +165,20 @@ echo "AUTH_TOKEN=$(openssl rand -base64 32)" > .env
 docker compose up -d
 
 # Check health
-curl http://localhost:3000/health
+curl http://localhost:7010/health
 ```
 
 ### Docker Architecture
+
 The Docker image contains ONLY these runtime dependencies:
+
 - `@modelcontextprotocol/sdk` - MCP protocol implementation
 - `better-sqlite3` / `sql.js` - SQLite database access
 - `express` - HTTP server mode
 - `dotenv` - Environment configuration
 
 ### Docker Features
+
 - **Ultra-optimized size** (~280MB runtime-only)
 - **No n8n dependencies** in production image
 - **Pre-built database** required (nodes.db)
@@ -179,11 +187,13 @@ The Docker image contains ONLY these runtime dependencies:
 - **Health checks** built into the image
 
 ### Docker Images
+
 - `ghcr.io/czlonkowski/n8n-mcp:latest` - Runtime-only production image
 - Multi-architecture support (amd64, arm64)
 - ~280MB compressed size (82% smaller!)
 
 ### Docker Development
+
 ```bash
 # Use BuildKit compose for development
 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f docker-compose.buildkit.yml up
@@ -202,12 +212,14 @@ For detailed Docker documentation, see [DOCKER_README.md](./DOCKER_README.md).
 The project implements MCP (Model Context Protocol) to expose n8n node documentation, source code, and examples to AI assistants. Key architectural components:
 
 ### Core Services
+
 - **NodeDocumentationService** (`src/services/node-documentation-service.ts`): Main database service using SQLite with FTS5 for fast searching
 - **MCP Server** (`src/mcp/server.ts`): Implements MCP protocol with tools for querying n8n nodes
 - **Node Source Extractor** (`src/utils/node-source-extractor.ts`): Extracts node implementations from n8n packages
 - **Enhanced Documentation Fetcher** (`src/utils/enhanced-documentation-fetcher.ts`): Fetches and parses official n8n documentation
 
 ### MCP Tools Available
+
 - `list_nodes` - List all available n8n nodes with filtering
 - `get_node_info` - Get comprehensive information about a specific node (now includes aiToolCapabilities)
 - `get_node_essentials` - **NEW** Get only essential properties (10-20) with examples (95% smaller)
@@ -232,9 +244,11 @@ The project implements MCP (Model Context Protocol) to expose n8n node documenta
 - `tools_documentation` - **NEW v2.7.3** Get comprehensive documentation for MCP tools
 
 ### n8n Management Tools (NEW v2.6.0 - Requires API Configuration)
+
 These tools are only available when N8N_API_URL and N8N_API_KEY are configured:
 
 #### Workflow Management
+
 - `n8n_create_workflow` - Create new workflows with nodes and connections
 - `n8n_get_workflow` - Get complete workflow by ID
 - `n8n_get_workflow_details` - Get workflow with execution statistics
@@ -247,17 +261,21 @@ These tools are only available when N8N_API_URL and N8N_API_KEY are configured:
 - `n8n_validate_workflow` - **NEW v2.6.3** Validate workflow from n8n instance by ID
 
 #### Execution Management
+
 - `n8n_trigger_webhook_workflow` - Trigger workflows via webhook URL
 - `n8n_get_execution` - Get execution details by ID
 - `n8n_list_executions` - List executions with status filtering
 - `n8n_delete_execution` - Delete execution records
 
 #### System Tools
+
 - `n8n_health_check` - Check n8n API connectivity and features
 - `n8n_list_available_tools` - List all available management tools
 
 ### Database Structure
+
 Uses SQLite with enhanced schema:
+
 - **nodes** table: Core node information with FTS5 indexing
 - **node_documentation**: Parsed markdown documentation
 - **node_examples**: Generated workflow examples
@@ -276,12 +294,14 @@ Uses SQLite with enhanced schema:
 ### Key Technical Decisions (v2.3)
 
 1. **Database Adapter Implementation**:
+
    - Created `DatabaseAdapter` interface to abstract database operations
    - Implemented `BetterSQLiteAdapter` and `SQLJSAdapter` classes
    - Used factory pattern in `createDatabaseAdapter()` for automatic selection
    - Added persistence layer for sql.js with debounced saves (100ms)
 
 2. **Compatibility Strategy**:
+
    - Primary: Try better-sqlite3 first for performance
    - Fallback: Catch native module errors and switch to sql.js
    - Detection: Check for NODE_MODULE_VERSION errors specifically
@@ -306,6 +326,7 @@ The project now features automatic database adapter fallback for universal Node.
 This means the project works with ANY Node.js version without manual intervention. The adapter selection is automatic and transparent.
 
 ### Implementation Status
+
 - ✅ Property/operation extraction for 98.7% of nodes
 - ✅ Support for both n8n-nodes-base and @n8n/n8n-nodes-langchain
 - ✅ AI tool detection (35 tools with usableAsTool property)
@@ -315,6 +336,7 @@ This means the project works with ANY Node.js version without manual interventio
 - ⏳ Workflow examples (deferred - using documentation)
 
 ### Testing Workflow
+
 ```bash
 npm run build        # Always build first
 npm test             # Run all tests
@@ -322,6 +344,7 @@ npm run typecheck    # Verify TypeScript types
 ```
 
 ### Docker Development
+
 ```bash
 # Local development with stdio
 docker-compose -f docker-compose.local.yml up
@@ -331,7 +354,9 @@ docker-compose -f docker-compose.http.yml up
 ```
 
 ### Authentication (HTTP mode)
+
 When running in HTTP mode, use Bearer token authentication:
+
 ```
 Authorization: Bearer your-auth-token
 ```
@@ -339,27 +364,34 @@ Authorization: Bearer your-auth-token
 ## Architecture Patterns
 
 ### Service Layer Pattern
+
 All major functionality is implemented as services in `src/services/`. When adding new features:
+
 1. Create a service class with clear responsibilities
 2. Use dependency injection where appropriate
 3. Implement proper error handling with custom error types
 4. Add comprehensive logging using the logger utility
 
 ### MCP Tool Implementation
+
 When adding new MCP tools:
+
 1. Define the tool in `src/mcp/tools.ts`
 2. Implement handler in `src/mcp/server.ts`
 3. Add proper input validation
 4. Return structured responses matching MCP expectations
 
 ### Database Access Pattern
+
 - Use prepared statements for all queries
 - Implement proper transaction handling
 - Use FTS5 for text searching
 - Cache frequently accessed data in memory
 
 ### Database Adapter Pattern (NEW in v2.3)
+
 The project uses a database adapter pattern for universal compatibility:
+
 - **Primary adapter**: `better-sqlite3` - Native SQLite bindings for optimal performance
 - **Fallback adapter**: `sql.js` - Pure JavaScript implementation for compatibility
 - **Automatic selection**: The system detects and handles version mismatches automatically
@@ -369,6 +401,7 @@ The project uses a database adapter pattern for universal compatibility:
 ## Environment Configuration
 
 Required environment variables (see `.env.example`):
+
 ```
 # Server Configuration
 NODE_ENV=development
@@ -379,7 +412,7 @@ AUTH_TOKEN=your-secure-token
 # Set to 1 when behind a reverse proxy (Nginx, etc.)
 TRUST_PROXY=0
 
-# MCP Configuration  
+# MCP Configuration
 MCP_SERVER_NAME=n8n-documentation-mcp
 MCP_SERVER_VERSION=1.0.0
 
@@ -390,6 +423,7 @@ LOG_LEVEL=info
 ## License
 
 This project is licensed under the MIT License. Created by Romuald Czlonkowski @ www.aiadvisors.pl/en.
+
 - ✅ Free for any use (personal, commercial, etc.)
 - ✅ Modifications and distribution allowed
 - ✅ Can be included in commercial products
@@ -402,12 +436,14 @@ Attribution is appreciated but not required. See [LICENSE](LICENSE) and [ATTRIBU
 ### ✅ HTTP Server Implementation Complete
 
 The project now includes a simplified HTTP server mode for remote deployments:
+
 - **Single-user design**: Stateless architecture for private deployments
 - **Simple token auth**: Bearer token authentication
 - **MCP-compatible**: Works with mcp-remote adapter for Claude Desktop
 - **Easy deployment**: Minimal configuration required
 
 ### Quick Start
+
 ```bash
 # Server setup
 export MCP_MODE=http
@@ -434,6 +470,7 @@ npm run start:http
 ```
 
 ### Available Scripts
+
 - `npm run start:http` - Start in HTTP mode
 - `npm run http` - Build and start HTTP server
 - `npm run dev:http` - Development mode with auto-reload
@@ -444,79 +481,96 @@ For detailed deployment instructions, see [HTTP Deployment Guide](./docs/HTTP_DE
 ## Recent Problem Solutions
 
 ### MCP HTTP Server Errors (Solved in v2.3.2)
+
 **Problem**: Two critical errors prevented the HTTP server from working:
+
 1. "stream is not readable" - Express.json() middleware consumed the request stream
 2. "Server not initialized" - StreamableHTTPServerTransport initialization issues
 
 **Solution**: Two-phase fix:
+
 1. Removed body parsing middleware to preserve raw stream
 2. Created direct JSON-RPC implementation bypassing StreamableHTTPServerTransport
 
 **Technical Details**:
+
 - `src/http-server-single-session.ts` - Single-session implementation (partial fix)
 - `src/http-server.ts` - Direct JSON-RPC implementation (complete fix)
 - `src/utils/console-manager.ts` - Console output isolation
 - Use `USE_FIXED_HTTP=true` to enable the fixed implementation
 
 ### SQLite Version Mismatch (Solved in v2.3)
+
 **Problem**: Claude Desktop bundles Node.js v16.19.1, causing NODE_MODULE_VERSION errors with better-sqlite3 compiled for different versions.
 
 **Solution**: Implemented dual-adapter system:
+
 1. Database adapter abstraction layer
 2. Automatic fallback from better-sqlite3 to sql.js
 3. Transparent operation regardless of Node.js version
 4. No manual configuration required
 
 **Technical Details**:
+
 - `src/database/database-adapter.ts` - Adapter interface and implementations
 - `createDatabaseAdapter()` - Factory function with automatic selection
 - Modified all database operations to use adapter interface
 - Added sql.js with persistence support
 
 ### Property Extraction Issues (Solved in v2.2)
+
 **Problem**: Many nodes had empty properties/operations arrays.
 
 **Solution**: Created dedicated `PropertyExtractor` class that handles:
+
 1. Instance-level property extraction
 2. Versioned node support
 3. Both programmatic and declarative styles
 4. Complex nested property structures
 
 ### Dependency Update Issues (Solved in v2.3.3)
+
 **Problem**: n8n packages have interdependent version requirements. Updating them independently causes version mismatches.
 
 **Solution**: Implemented smart dependency update system:
+
 1. Check n8n's required dependency versions
 2. Update all packages to match n8n's requirements
 3. Validate database after updates
 4. Fix node type references in validation script
 
 **Technical Details**:
+
 - `scripts/update-n8n-deps.js` - Smart dependency updater
 - `.github/workflows/update-n8n-deps.yml` - GitHub Actions automation
 - `renovate.json` - Alternative Renovate configuration
 - Fixed validation to use 'nodes-base.httpRequest' format instead of 'httpRequest'
 
 ### AI-Optimized Tools (NEW in v2.4.0)
+
 **Problem**: get_node_info returns 100KB+ of JSON with 200+ properties, making it nearly impossible for AI agents to efficiently configure nodes.
 
 **Solution**: Created new tools that provide progressive disclosure of information:
+
 1. `get_node_essentials` - Returns only the 10-20 most important properties
 2. `search_node_properties` - Find specific properties without downloading everything
 
 **Results**:
+
 - 95% reduction in response size (100KB → 5KB)
 - Only essential and commonly-used properties returned
 - Includes working examples for immediate use
 - AI agents can now configure nodes in seconds instead of minutes
 
 **Technical Implementation**:
+
 - `src/services/property-filter.ts` - Curated essential properties for 20+ nodes
 - `src/services/example-generator.ts` - Working examples for common use cases
 - Smart property search with relevance scoring
 - Automatic fallback for unconfigured nodes
 
 **Usage Recommendation**:
+
 ```bash
 # OLD approach (avoid):
 get_node_info("nodes-base.httpRequest")  # 100KB+ response
@@ -526,103 +580,124 @@ get_node_essentials("nodes-base.httpRequest")  # 5KB response with examples
 ```
 
 ### Task-Based Configuration (NEW in v2.4.0)
+
 **Problem**: AI agents need to know exactly how to configure nodes for common tasks like "send email", "fetch API", or "update database".
 
 **Solution**: Created task template system:
+
 1. Pre-configured node settings for common tasks
 2. Working examples with proper credentials structure
 3. Task discovery via `list_tasks` tool
 
 **Results**:
+
 - Instant node configuration for common tasks
 - No guessing about property values
 - Production-ready configurations
 - Covers 30+ common automation tasks
 
 ### Workflow Template Support (NEW in v2.4.1)
+
 **Problem**: AI agents needed complete workflow examples to understand how nodes work together.
 
 **Solution**: Integrated n8n.io workflow templates:
+
 1. **10,000+ templates** available via MCP tools
 2. Search by keywords or node usage
 3. Get complete workflow JSON for import
 4. Task-based template suggestions
 
 **Technical Details**:
+
 - Templates fetched from official n8n.io API
 - Stored in SQLite with FTS5 search
 - Includes metadata: categories, node counts, user ratings
 - Smart caching to prevent API overload
 
 ### Enhanced Validation with Profiles (NEW in v2.4.2)
+
 **Problem**: Different validation needs - quick checks during editing vs thorough validation before deployment.
 
 **Solution**: Validation profiles with operation awareness:
+
 1. **strict** - Full validation (deployment)
 2. **standard** - Common issues only (default)
 3. **minimal** - Just required fields
 4. **quick** - Fast essential checks
 
 **Results**:
+
 - 90% faster validation for editing workflows
 - Operation-specific validation rules
 - Better error messages with fix suggestions
 - Node-specific validators for complex nodes
 
 ### Complete Workflow Validation (NEW in v2.5.0)
+
 **Problem**: Node validation wasn't enough - needed to validate entire workflows including connections, expressions, and dependencies.
 
 **Solution**: Three-layer workflow validation:
+
 1. **Structure validation** - Nodes, connections, dependencies
-2. **Configuration validation** - All node configs with operation awareness  
+2. **Configuration validation** - All node configs with operation awareness
 3. **Expression validation** - n8n expression syntax checking
 
 **Results**:
+
 - Catch workflow errors before deployment
 - Validate complex multi-node workflows
 - Check all n8n expressions for syntax errors
 - Ensure proper node connections and data flow
 
 ### AI Tool Support Enhancement (NEW in v2.5.1)
+
 **Problem**: AI agents needed better guidance on using n8n nodes as AI tools and understanding tool connections.
 
 **Solution**: Enhanced AI tool support:
+
 1. New `get_node_as_tool_info` - Explains how ANY node can be used as an AI tool
 2. Enhanced workflow validation for ai_tool node connections
 3. Better documentation for AI tool usage patterns
 4. Validation ensures proper tool node connections
 
 **Results**:
+
 - AI agents can now properly configure AI tool workflows
 - Clear guidance on credential requirements for tools
 - Validation catches common AI workflow mistakes
 - Supports both native AI nodes and regular nodes as tools
 
 ### n8n Management Integration (NEW in v2.6.0)
+
 **Problem**: AI agents could discover and validate workflows but couldn't deploy or execute them.
 
 **Solution**: Integrated n8n-manager-for-ai-agents functionality:
+
 1. **14 new management tools** when API configured
 2. Complete workflow lifecycle support
 3. Smart error handling for API limitations
 4. Optional feature - only loads when configured
 
 **Results**:
+
 - Full workflow automation: discover → build → validate → deploy → execute
 - Webhook-based workflow triggering
 - Execution monitoring and management
 - Backwards compatible - doesn't affect existing functionality
 
 ### Workflow Diff Engine (NEW in v2.7.0)
+
 **Problem**: Updating workflows required sending the entire JSON (often 50KB+), wasting tokens and making it hard to see what changed.
 
 **Solution**: Diff-based workflow updates:
+
 1. **13 targeted operations** - Add, remove, update, move nodes/connections
 2. **80-90% token savings** - Only send the changes
 3. **Transactional updates** - All changes validated before applying
 4. **Order independence** - Add connections before nodes exist
 
 **Results**:
+
 - Update a single node property without sending entire workflow
 - Clear audit trail of what changed
 - Safer updates with validation
@@ -631,23 +706,28 @@ get_node_essentials("nodes-base.httpRequest")  # 5KB response with examples
 ## Known Issues
 
 ### Claude Desktop - Duplicate Container Bug
+
 When adding n8n-mcp to Claude Desktop, you might see "Container with name '/n8n-mcp-container' already exists" error. This is a Claude Desktop bug where it doesn't properly clean up containers between sessions.
 
 **Workaround**: Add this to your Claude Desktop config to use a unique container name each time:
+
 ```json
 {
   "command": "docker",
   "args": [
-    "run", 
-    "--rm", 
-    "--name", "n8n-mcp-{{timestamp}}",
-    "-e", "AUTH_TOKEN=your-token",
+    "run",
+    "--rm",
+    "--name",
+    "n8n-mcp-{{timestamp}}",
+    "-e",
+    "AUTH_TOKEN=your-token",
     "ghcr.io/czlonkowski/n8n-mcp:latest"
   ]
 }
 ```
 
 Note: `{{timestamp}}` is not actually supported by Claude Desktop. The real workaround is to manually remove the container when this happens:
+
 ```bash
 docker rm n8n-mcp-container
 ```
@@ -675,6 +755,7 @@ rm -rf npm-publish-temp
 ```
 
 The published package can then be used with npx:
+
 ```bash
 npx n8n-mcp
 ```
@@ -682,6 +763,7 @@ npx n8n-mcp
 ## Future Enhancements
 
 ### Planned Features
+
 - Historical version tracking for nodes
 - Workflow template generation from examples
 - Performance metrics and optimization suggestions
@@ -689,7 +771,9 @@ npx n8n-mcp
 - WebSocket support for real-time updates
 
 ### Contributing
+
 Contributions are welcome! Please:
+
 1. Follow the existing code patterns
 2. Add tests for new functionality
 3. Update documentation as needed

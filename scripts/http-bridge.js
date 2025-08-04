@@ -10,7 +10,7 @@ const readline = require('readline');
 
 // Use MCP_URL from environment or construct from HOST/PORT if available
 const defaultHost = process.env.HOST || 'localhost';
-const defaultPort = process.env.PORT || '3000';
+const defaultPort = process.env.PORT || '7010';
 const MCP_URL = process.env.MCP_URL || `http://${defaultHost}:${defaultPort}/mcp`;
 const AUTH_TOKEN = process.env.AUTH_TOKEN || process.argv[2];
 
@@ -36,7 +36,7 @@ let buffer = '';
 rl.on('line', async (line) => {
   try {
     const message = JSON.parse(line);
-    
+
     // Forward to HTTP server
     const options = {
       hostname: url.hostname,
